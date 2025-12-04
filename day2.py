@@ -16,25 +16,32 @@ def read_data(input):
 
 def check_range(start, end):
     counter = 0
+
+
     for i in range(start, end+1):
         tested_id = str(i)
+        is_repetition = False
 
-        count = True
         for length in range(1, len(tested_id) // 2 + 1):
-            print("\n")
-            for k in range(1, len(tested_id) // max(length, 1)):
-                tester = tested_id[:length]
-                toTest = tested_id[k * length:k * length + length]
-                print(f"{tested_id[:length]} = {tested_id[k * length:k * length + length]}")
-                if tested_id[:length] != tested_id[k*length:k*length+length]:
+            if len(tested_id) % length != 0:
+                continue
 
-                    count = False
+            current_match = True
+
+            pattern = tested_id[:length]
+
+            for k in range(length, len(tested_id), length):
+                chunk = tested_id[k: k + length]
+
+                if pattern != chunk:
+                    current_match = False
                     break
-                c
-            if count:
+
+            if current_match:
+                is_repetition = True
                 break
 
-        if count:
+        if is_repetition:
             counter += i
 
 
@@ -42,7 +49,7 @@ def check_range(start, end):
 
 
 if __name__ == '__main__':
-    data = read_data("input/day2_test.txt")
+    data = read_data("input/day2.txt")
     total_counter = 0
     for pair in data:
         sum = check_range(int(pair[0]), int(pair[1]))
