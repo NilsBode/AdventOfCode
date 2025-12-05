@@ -24,18 +24,20 @@ def calc_data(lines: list[list[int]]):
         index_first_digit = np.argmax(tmp_line)
         line_number  = f"{tmp_line[index_first_digit]}"
 
+
         index_last_digit = index_first_digit
         for i in range(remaining_digits, 0 , -1):
             tmp_line2 = line[index_last_digit + 1:]
             possible_digit = np.argmax(tmp_line2)
-            while possible_digit > len(tmp_line2) - remaining_digits:
-                tmp_line2 = line[index_last_digit + 1:possible_digit]
-                possible_digit = np.argmax(tmp_line2)
 
-            else:
-                index_last_digit = possible_digit + 1 + remaining_digits - i
-                number = str(tmp_line2[possible_digit])
-                line_number = f"{line_number}{number}"
+            while possible_digit > len(tmp_line2) - i:
+                new_max_list = line[index_last_digit + 1:index_last_digit + 1 + possible_digit]
+                possible_digit = np.argmax(new_max_list)
+
+
+            index_last_digit += possible_digit + 1
+            number = str(tmp_line2[possible_digit])
+            line_number = f"{line_number}{number}"
 
         print(line_number)
         sum += int(line_number)
@@ -48,5 +50,5 @@ def calc_data(lines: list[list[int]]):
 
 
 if __name__ == '__main__':
-    data = read_data('input/day3_test.txt')
+    data = read_data('input/day3.txt')
     print(calc_data(data))
