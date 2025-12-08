@@ -1,3 +1,4 @@
+from functools import cache
 
 def read_data(input):
     file = open(input, "r")
@@ -25,25 +26,24 @@ def simulate(data):
         beam_indices = new_beams
     return splits
 
-def simulate_part2(data, start_row, indice):
-    print(start_row)
+@cache
+def simulate_part2(start_row, index):
     if start_row == len(data)-1:
         return 1
 
     total_ways = 0
 
-    if data[start_row+1][indice] == ".":
-        total_ways += simulate_part2(data, start_row+1, indice)
+    if data[start_row+1][index] == ".":
+        total_ways += simulate_part2(start_row + 1, index)
 
-    elif data[start_row+1][indice] == "^":
-        total_ways += simulate_part2(data, start_row+1, indice+1)
-        total_ways += simulate_part2(data, start_row+1, indice-1)
+    elif data[start_row+1][index] == "^":
+        total_ways += simulate_part2(start_row + 1, index + 1)
+        total_ways += simulate_part2(start_row + 1, index - 1)
 
     return total_ways
 
-
+data = read_data("input/day7.txt")
 
 if __name__ == '__main__':
-    data = read_data("input/day7.txt")
 
-    print(simulate_part2(data, 0, 70))
+    print(simulate_part2(0, 70))
